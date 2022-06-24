@@ -3,7 +3,7 @@
   "description": "Tool for easy visualizing of breakpoints in responsive design. ",
   "version": "1.0.0",
   "manifest_version": 2,
-  "homepage_url": "",
+  "homepage_url": "https://github.com/malwoodsantoro/breaks-ffox-extension",
   "browser_action": {
     "default_popup": "index.html",
     "default_title": "breaks!",
