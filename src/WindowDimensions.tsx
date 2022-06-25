@@ -1,12 +1,21 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface Size {
   width: number;
   height: number;
 }
 
-const WindowDimensions = () => {
-  const [windowSize, setWindowSize] = useState<Size>({width: window.innerWidth, height: window.innerHeight});
+interface Values {
+  name: string,
+  minWidth: string
+}
+
+type Props = {
+  values: Values[];
+};
+
+const WindowDimensions: React.FC<Props> = ({ values }) => {
+  const [windowSize, setWindowSize] = useState<Size>({ width: window.innerWidth, height: window.innerHeight });
 
   const onResize = () => {
     const width = window.innerWidth;
@@ -19,22 +28,18 @@ const WindowDimensions = () => {
   }
 
   useEffect(() => {
-    
+
     window.addEventListener('resize', onResize);
-  }, []);
+  });
 
   return (
-    <div style={{
-      backgroundColor:
-        !windowSize || windowSize.width <= 500
-          ? "white"
-          : windowSize && windowSize.width <= 700
-          ? "green"
-          : "orange",
-    }}
-  > width: {windowSize.width} x height: {windowSize.height}</div>
-  
+    <div>
+      {values && values.map(({ name, minWidth }: any, index: number) => {
+        return (<div key={index}>{name} + {minWidth}</div>)
+      })
+      }
+    </div>
   )
 }
 
-export default WindowDimensions;
+  export default WindowDimensions
