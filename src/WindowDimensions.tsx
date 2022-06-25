@@ -7,7 +7,8 @@ interface Size {
 
 interface Values {
   name: string,
-  minWidth: string
+  minWidth: string,
+  maxWidth: string
 }
 
 type Props = {
@@ -30,16 +31,25 @@ const WindowDimensions: React.FC<Props> = ({ values }) => {
   useEffect(() => {
 
     window.addEventListener('resize', onResize);
-  });
+  }, []);
 
   return (
     <div>
-      {values && values.map(({ name, minWidth }: any, index: number) => {
-        return (<div key={index}>{name} + {minWidth}</div>)
+      {values && values.map(({ name, minWidth, maxWidth }: any, index: number) => {
+        return (
+          <div>
+            <div>Name: {name}, Width: {minWidth}</div>
+            {windowSize.width <= maxWidth && windowSize.width >= minWidth &&
+              <div>
+                {name}
+              </div>
+            }
+          </div>
+        )
       })
       }
     </div>
   )
 }
 
-  export default WindowDimensions
+export default WindowDimensions
