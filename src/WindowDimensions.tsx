@@ -38,7 +38,6 @@ const WindowDimensions: React.FC<Props> = ({ values }) => {
       {values && values.map(({ name, minWidth, maxWidth }: any, index: number) => {
         return (
           <div>
-            <div>Name: {name}, Width: {minWidth}</div>
             {windowSize.width <= maxWidth && windowSize.width >= minWidth &&
               <div>
                 {name}
