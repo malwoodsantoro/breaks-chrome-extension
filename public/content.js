@@ -1,6 +1,7 @@
 var div=document.createElement("div"); 
 document.body.appendChild(div); 
 div.style.backgroundColor="pink";
+div.id="wow";
 div.innerText="test124";
 div.style.position ="fixed";
 div.style.top = 0;
