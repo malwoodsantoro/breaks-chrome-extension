@@ -1,19 +1,18 @@
+
 {
-  "name": "breaks!",
-  "description": "Tool for easy visualizing of breakpoints in responsive design. ",
-  "version": "1.0.0",
-  "manifest_version": 2,
-  "homepage_url": "https://github.com/malwoodsantoro/breaks-ffox-extension",
-  "browser_action": {
-    "default_popup": "index.html",
-    "default_title": "breaks!",
-    "default_icon": {
-      "48": "logo48.png",
-      "96": "logo96.png"
-    }
+  "name": "Breaks",
+  "manifest_version": 3,
+  "version": "0.0.1",
+  "description": "Retrieves headlines relevant to the website you are currently on",
+  "content_scripts": [{
+    "js": [ "content.js"],
+    "matches": [ "<all_urls>"]
+   }],
+   "action": {
+    "default_popup": "index.html"
   },
-  "icons": {
-    "48": "logo48.png",
-    "96": "logo96.png"
+  "background": {
+    "service_worker": "background.js"
+   },
+   "permissions": ["contextMenus", "tabs", "scripting"]
   }
-}

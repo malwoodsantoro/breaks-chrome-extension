@@ -20,6 +20,7 @@ export default function Form() {
     let newFormValues: valuesType = [...formValues];
     const { name, value } = e.currentTarget;
     newFormValues[index][name as keyof Values] = value;
+    chrome.runtime.sendMessage({action: "popupOpen"})
     setFormValues(newFormValues);
   };
 
