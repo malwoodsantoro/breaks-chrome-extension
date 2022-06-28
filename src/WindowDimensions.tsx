@@ -15,6 +15,7 @@ type Props = {
   values: Values[];
 };
 
+
 const WindowDimensions: React.FC<Props> = ({ values }) => {
   const [windowSize, setWindowSize] = useState<Size>({ width: window.innerWidth, height: window.innerHeight });
 
@@ -26,6 +27,7 @@ const WindowDimensions: React.FC<Props> = ({ values }) => {
       width: width,
       height: height,
     });
+
   }
 
   useEffect(() => {

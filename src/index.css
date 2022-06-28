@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+form {
+  width: 600px;
+  height: 400px;
+}

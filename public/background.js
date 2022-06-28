@@ -1,29 +1,30 @@
-function changeBackgroundColor() {
-  document.getElementById('wow').style.backgroundColor = "red";
-}
+// function changeInnerHTML(data) {
+//   document.getElementById("wow").innerHTML = "got em"
+//   console.log(data)
+// }
 
-chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+// chrome.runtime.onMessage.addListener(async function (message, sender, sendResponse) {
+//   const parse = JSON.parse(message)
+//   const value = await Promise.all(parse.forEach((object) => {
+//     if (object.minWidth <= chrome.windows.getCurrent.innerWidth && chrome.windows.getCurrent.innerWidth <= object.maxWidth) {
+//       return object.name
+//     }
+//   }));
 
-  console.log(message);
-  switch (message.action) {
-    case "popupOpen": {
-      chrome.tabs.query({}, (tabList) => {
-        if (!tabList.length) return;
-        tabList.forEach((tab) => {
-          chrome.scripting.executeScript(
-            {
-              func: changeBackgroundColor,
-              target: {
-                tabId: tab.id,
-                allFrames: true
-              }
-            }
-          );
-        });
-      });
-    }
-      break;
+//   if (message.data) {
+//     const tabId = await getTabId();
+//     chrome.scripting.executeScript({
+//       target: { tabId: tabId },
+//       func: changeInnerHTML,
+//       args: [value]
+//     })
+//   }
+//   if (message.method === 'resize') {
+//     console.log('resize!!!')
+//   }
+// });
 
-  }
-
-});
+// async function getTabId() {
+//   const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+//   return (tabs.length > 0) ? tabs[0].id : null;
+// }
