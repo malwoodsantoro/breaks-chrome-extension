@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
-import WindowDimensions from './WindowDimensions';
-import { createTheme } from '@mui/material/styles';
+import ToggleButton from '@mui/material/ToggleButton';
+import CheckIcon from '@mui/icons-material/Check';
 import TextField from '@mui/material/TextField';
 
 interface Values {
@@ -15,20 +15,21 @@ type valuesType = Values[];
 export default function Form() {
 
   const [formValues, setFormValues] = useState<valuesType>([{ name: 'small', minWidth: '640', maxWidth: '767' }, { name: 'medium', minWidth: '768', maxWidth: '1023' }, { name: 'large', minWidth: '1024', maxWidth: '1279' }, { name: 'x-large', minWidth: '1279', maxWidth: '1535' }, { name: '2x-large', minWidth: '1536', maxWidth: '2000' }])
+  const [disabled, setDisabled] = useState(false);
 
   useEffect(() => {
     chrome.storage.local.set({ data: formValues }, () => {
-      chrome.tabs.getCurrent((currentTab: any) => {
-        chrome.tabs.sendMessage(
-          currentTab.id,
-          {
-            message: "Generic Message",
-          },
-          function () { }
-        );
+      console.log('Set formValues in useEffect!')
+    });
+
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+      chrome.tabs.sendMessage(tabs[0].id!, {disabled: disabled}, function() {
+        chrome.storage.local.set({ disabled: disabled }, () => {
+          console.log('Set disabled in useEffect!')
+        });
       });
     });
-  }, []);
+  }, [disabled]);
 
   const onChange = (index: number, e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>): void => {
     let newFormValues: valuesType = [...formValues];
@@ -37,9 +38,13 @@ export default function Form() {
     setFormValues(newFormValues);
   };
 
+  const handleCheck = () => {
+    setDisabled(!disabled);
+  }
+
   const handleSubmit = (e: React.SyntheticEvent) => {
     chrome.storage.local.set({ data: formValues }, () => {
-      alert('set storage!')
+      console.log('set storage!')
     });
     setFormValues(formValues);
     e.preventDefault();
@@ -75,7 +80,16 @@ export default function Form() {
           <Button variant="outlined" className="button submit" type="submit">Submit</Button>
         </div>
       </form>
-      <WindowDimensions values={formValues} />
+      <div className="flex">
+        <div>{disabled ? "Enable plugin" : "Disable plugin"}</div>
+        <ToggleButton
+          value="check"
+          selected={disabled}
+          onChange={handleCheck}
+        >
+          <CheckIcon />
+        </ToggleButton>
+      </div>
     </div>
   );
 }

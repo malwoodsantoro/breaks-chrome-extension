@@ -1,20 +1,25 @@
 var data = {};
 var div = document.createElement("div");
 
-chrome.runtime.onMessage.addListener(function (request) {
-
-  alert(request)
-})
-
-function isEmpty(object) {
+isEmpty = (object) => {
   for (const property in object) {
     return false;
   }
   return true;
 }
 
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+   if(request.disabled) {
+    div.style.display = "none";
+   } else {
+    div.style.display = "block";
+   }
+  }
+);
+
 // Initial page load 
-window.addEventListener('load', function () {
+window.addEventListener('load', () => {
   document.body.appendChild(div);
   div.style.backgroundColor = "pink";
   div.id = "wow";
@@ -24,7 +29,7 @@ window.addEventListener('load', function () {
   div.style.width = 200;
   div.style.height = 200;
 
-  chrome.storage.local.get('data', function (result) {
+  chrome.storage.local.get('data', (result) => {
     data = result.data;
     data.forEach((item) => {
       if (item.minWidth <= window.innerWidth && window.innerWidth <= item.maxWidth) {
@@ -35,7 +40,7 @@ window.addEventListener('load', function () {
 });
 
 //Update value when window is resized
-window.addEventListener('resize', function () {
+window.addEventListener('resize', () => {
   if (isEmpty(data) == false) {
     for (var i = 0; i < data.length; i++) {
       if (data[i].minWidth <= window.innerWidth && window.innerWidth <= data[i].maxWidth) {
@@ -43,6 +48,6 @@ window.addEventListener('resize', function () {
         return;
       }
     }
-    div.innerHTML = "Outside specified widths."
+    div.innerHTML = "Beyond specified widths."
   }
 });
