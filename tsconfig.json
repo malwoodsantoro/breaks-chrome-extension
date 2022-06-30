@@ -22,7 +22,7 @@
   },
   "include": [
     "src"
-  ],
+, "public/background.js"  ],
   "types": [
     //(various types, e.g. jquery, core-js),
     "chrome"

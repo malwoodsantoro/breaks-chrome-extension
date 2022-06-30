@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
-import ToggleButton from '@mui/material/ToggleButton';
-import CheckIcon from '@mui/icons-material/Check';
+import DeleteIcon from '@mui/icons-material/Delete'
 import TextField from '@mui/material/TextField';
+import Switch from '@mui/material/Switch';
+import InputAdornment from '@mui/material/InputAdornment';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography'
 
 interface Values {
   name: string,
@@ -22,8 +25,8 @@ export default function Form() {
       console.log('Set formValues in useEffect!')
     });
 
-    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-      chrome.tabs.sendMessage(tabs[0].id!, {disabled: disabled}, function() {
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      chrome.tabs.sendMessage(tabs[0].id!, { disabled: disabled }, function () {
         chrome.storage.local.set({ disabled: disabled }, () => {
           console.log('Set disabled in useEffect!')
         });
@@ -61,35 +64,37 @@ export default function Form() {
   }
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        {formValues.map((element, index) => (
-          <div className="form-inline" key={index}>
-            <TextField name="name" id="name" value={element.name || ""} label="Name" variant="standard" onChange={e => onChange(index, e)} />
-            <TextField name="minWidth" id="minWidth" value={element.minWidth || ""} label="Min-width" variant="standard" onChange={e => onChange(index, e)} />
-            <TextField name="maxWidth" id="maxWidth" value={element.maxWidth || ""} label="Max-width" variant="standard" onChange={e => onChange(index, e)} />
-            {
-              index ?
-                <Button variant="outlined" style={{ color: 'red' }} className="button remove" onClick={() => removeFormFields(index)}>Remove</Button>
-                : null
-            }
-          </div>
-        ))}
-        <div className="button-section">
-          <Button variant="text" className="button add" type="button" onClick={() => addFormFields()}>Add Row</Button>
-          <Button variant="outlined" className="button submit" type="submit">Submit</Button>
-        </div>
-      </form>
-      <div className="flex">
-        <div>{disabled ? "Enable plugin" : "Disable plugin"}</div>
-        <ToggleButton
-          value="check"
-          selected={disabled}
-          onChange={handleCheck}
-        >
-          <CheckIcon />
-        </ToggleButton>
-      </div>
-    </div>
+    <div style={{backgroundColor: disabled ? "#C5C5C5" : "#fff"}}>
+      <Box m={6} pt={2} sx={{ width: 450 }}>
+        <form onSubmit={handleSubmit}>
+          {formValues.map((element, index) => (
+            <div className="form-inline" key={index}>
+              <Box display="flex">
+                <TextField name="name" sx={{ width: '15ch', marginRight: 4}} id="name" value={element.name || ""} label="Name" variant="standard" onChange={e => onChange(index, e)} />
+                <TextField name="minWidth" sx={{ width: '10ch', marginRight: 2 }} id="minWidth" value={element.minWidth || ""} label="Min-width" variant="standard" onChange={e => onChange(index, e)} InputProps={{ endAdornment: <InputAdornment position="end">px</InputAdornment>, }} />
+                <TextField name="maxWidth" sx={{ width: '10ch', marginRight: 2 }} id="maxWidth" value={element.maxWidth || ""} label="Max-width" variant="standard" onChange={e => onChange(index, e)} InputProps={{ endAdornment: <InputAdornment position="end">px</InputAdornment>, }} />
+                {
+                  index ?
+                    <Button variant="text" startIcon={<DeleteIcon />} style={{ color: '#50a2f4' }} className="button remove" onClick={() => removeFormFields(index)}></Button>
+                    : null
+                }
+              </Box>
+            </div>
+          ))}
+          <Button variant="text" className="button add" type="button" onClick={() => addFormFields()}>+ Add Row</Button>
+          <Typography align='center'>
+            <Button variant="contained" className="button submit" sx={{ backgroundColor: "#00bfff" }} type="submit">Submit</Button>
+          </Typography>
+        </form>
+        <Box display="flex" flexDirection="row" alignItems="center" padding={1}>
+          <div>{disabled ? "Enable plugin" : "Disable plugin"}</div>
+          <Switch
+            checked={!disabled}
+            onChange={handleCheck}
+            inputProps={{ 'aria-label': 'controlled' }}
+          />
+        </Box>
+      </Box >
+    </div >
   );
 }

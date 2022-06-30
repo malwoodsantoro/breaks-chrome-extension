@@ -21,8 +21,8 @@ chrome.runtime.onMessage.addListener(
 // Initial page load 
 window.addEventListener('load', () => {
   document.body.appendChild(div);
-  div.style.backgroundColor = "pink";
-  div.id = "wow";
+  div.style.backgroundColor = "#9AE5FF";
+  div.id = "widthDiv";
   div.style.position = "fixed";
   div.style.top = 0;
   div.style.right = 0;
